@@ -35,43 +35,25 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	// Readiness endpoint
-	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
-
-		// 1. Setăm Content-Type
+		// Readiness endpoint
+	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-
-		// 2. Trimitem status code 200
 		w.WriteHeader(http.StatusOK)
-
-		// 3. Trimitem body-ul
 		w.Write([]byte("OK"))
 	})
 
-	mux.HandleFunc("/metrics",func(w http.ResponseWriter, r *http.Request)  {
-
-		// 1. Setăm Content-Type
+	// Metrics endpoint
+	mux.HandleFunc("GET /metrics", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-
-		// 2. Trimitem status code 200
 		w.WriteHeader(http.StatusOK)
-
-		// 3. Trimitem body-ul
-		w.Write([]byte(cfg.countHits() ))
-		
+		w.Write([]byte(cfg.countHits()))
 	})
 
-	mux.HandleFunc("/reset",func(w http.ResponseWriter, r *http.Request)  {
+	mux.HandleFunc("POST /reset",func(w http.ResponseWriter, r *http.Request)  {
 
-			// 1. Setăm Content-Type
 			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-
-			// 2. Trimitem status code 200
 			w.WriteHeader(http.StatusOK)
-
 			cfg.ResetHits()
-
-			// 3. Trimitem body-ul
 			w.Write([]byte("OK"))
 			
 		})
